@@ -26,16 +26,37 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     registerdialog.cpp \
-    mongodbconnection.cpp
+    mongodbconnection.cpp \
+    logindialog.cpp \
+    credential.cpp \
+    calendarscreen.cpp \
+    neweventdialog.cpp \
+    newemaildialog.cpp \
+    aboutevent.cpp \
+    selectedeventdialog.cpp \
+    sendemail.cpp
 
 HEADERS += \
         mainwindow.h \
     registerdialog.h \
-    mongodbconnection.h
+    mongodbconnection.h \
+    logindialog.h \
+    credential.h \
+    calendarscreen.h \
+    neweventdialog.h \
+    newemaildialog.h \
+    aboutevent.h \
+    selectedeventdialog.h \
+    sendemail.h
 
 FORMS += \
         mainwindow.ui \
-    registerdialog.ui
+    registerdialog.ui \
+    logindialog.ui \
+    calendarscreen.ui \
+    neweventdialog.ui \
+    newemaildialog.ui \
+    selectedeventdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -47,3 +68,14 @@ RESOURCES += \
 
 unix: CONFIG += link_pkgconfig
 unix: PKGCONFIG += libmongocxx
+
+# Following lines are added to use poco libraies
+# May not work properly on windows
+
+unix|win32: LIBS += -lPocoNet
+
+unix|win32: LIBS += -lPocoFoundation
+
+unix|win32: LIBS += -lPocoNetSSL
+
+unix|win32: LIBS += -lPocoUtil

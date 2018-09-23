@@ -5,82 +5,41 @@
 
 MongoDBConnection::MongoDBConnection()
 {
-    database_name = "";
-    collection_name = "";
-    client = nullptr;
-    database = nullptr;
-    collection = nullptr;
-}
-
-MongoDBConnection::MongoDBConnection(std::string connection_uri, std::string database_name, std::string collection_name)
-{
-    // This part initializes client
-    if (client == nullptr) {
-        client = new mongocxx::client(mongocxx::uri(connection_uri));
-    } else {
-        *client = mongocxx::client(mongocxx::uri(connection_uri));
-    }
-
-    // Checks if client is valid or not
-    if (!(*client)) {
-        delete client;
-        qDebug() << "Error in 3 parametered constructor\n"
-                 << "Client Error";
-        std::exit(EXIT_FAILURE);
-    }
-
-    // This part is for initializing database and collection
-    if (database == nullptr) {
-        database = new mongocxx::database;
-    }
-    *database = (*client)[database_name];
-
-    if (collection == nullptr) {
-        collection = new mongocxx::collection;
-    }
-    *collection = (*database)[collection_name];
+    // Deliberately empty
 }
 
 MongoDBConnection::MongoDBConnection(std::string database_name, std::string collection_name)
+    : client(mongocxx::uri("mongodb://localhost:27017")), database(client[database_name]), collection(database[collection_name])
 {
-    // This part initializes client
-    if (client == nullptr) {
-        client = new mongocxx::client{mongocxx::uri{}};
-    } else {
-        *client = mongocxx::client{mongocxx::uri{}};
-    }
-
-    // Checks if client is valid or not
-    if (!(*client)) {
-        delete client;
-        qDebug() << "Error in 2 parametered constructor\n"
-                 << "Client Error";
-        std::exit(EXIT_FAILURE);
-    }
-
-    // This part is for initializing database and collection
-    if (database == nullptr) {
-        database = new mongocxx::database;
-    }
-    *database = (*client)[database_name];
-
-    if (collection == nullptr) {
-        collection = new mongocxx::collection;
-        *collection = (*database)[collection_name];
+    if (!client) {
+        qDebug() << "Client Error";
     }
 }
 
-MongoDBConnection::~MongoDBConnection()
+MongoDBConnection::MongoDBConnection(std::string connection_uri, std::string database_name, std::string collection_name)
+    : client(mongocxx::uri(connection_uri)), database(client[database_name]), collection(database[collection_name])
 {
-    if (collection != nullptr) {
-        delete collection;
+    if (!client) {
+        qDebug() << "Client Error";
     }
+}
 
-    if (database != nullptr) {
-        delete database;
-    }
+void MongoDBConnection::change_collection(std::string new_collection_name)
+{
+    collection = database[new_collection_name];
+}
 
-    if (client != nullptr) {
-        delete client;
-    }
+mongocxx::client& MongoDBConnection::get_client()
+{
+    return client;
+}
+
+mongocxx::database& MongoDBConnection::get_database()
+{
+    return database;
+}
+
+mongocxx::collection& MongoDBConnection::get_collection()
+{
+    return collection;
 }

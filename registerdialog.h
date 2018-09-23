@@ -2,6 +2,7 @@
 #define REGISTERDIALOG_H
 
 #include <QDialog>
+#include "mongodbconnection.h"
 
 namespace Ui {
 class RegisterDialog;
@@ -21,6 +22,7 @@ private slots:
 
 private:
     Ui::RegisterDialog *ui;
+    MongoDBConnection *connection;
 };
 
 #endif // REGISTERDIALOG_H
