@@ -21,12 +21,12 @@ CalendarScreen::CalendarScreen(QWidget *parent) :
     // To connect database
     connection = new MongoDBConnection(/* Enter your connection parameter here */);
 
+    // Following function will check if there is an event which email have to sent today
+    check_for_events_with_email(QDate::currentDate().toString("dd/MM/yyyy").toStdString());
+        
     // When screen is loaded initially to show current events in today
     // following code is executed
     list_events(QDate::currentDate().toString("dd/MM/yyyy").toStdString());
-
-    // Following function will check if there is an event which email have to sent today
-    check_for_events_with_email(QDate::currentDate().toString("dd/MM/yyyy").toStdString());
 }
 
 CalendarScreen::~CalendarScreen()
